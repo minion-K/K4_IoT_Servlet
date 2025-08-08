@@ -12,3 +12,5 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     country VARCHAR(100) NOT NULL
 );
+
+

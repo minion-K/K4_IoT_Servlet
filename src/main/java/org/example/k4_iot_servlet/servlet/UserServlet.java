@@ -25,8 +25,9 @@ import org.example.k4_iot_servlet.entity.User;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.sql.SQLException;
+import java.util.List;
 
-@WebServlet // 서블릿 실행 초기 페이지 URL
+@WebServlet("/") // 서블릿 실행 초기 페이지 URL
 // 서블릿 URL 매핑을 위한 어노테이션
 // : 루트 경로("/")에 매핑되어 모든 요청을 받아 처리
 public class UserServlet extends HttpServlet { // 서블릿 컨테이너가 해당 클래스를 서블릿으로 인지
@@ -99,7 +100,7 @@ public class UserServlet extends HttpServlet { // 서블릿 컨테이너가 해�
 
         userDao.insertUser(newUser);
 
-        resp.sendRedirect("/list"); // /list 이동 - 클라이언트에게 다른 페이지로 이동을 명령
+        resp.sendRedirect("list"); // /list 이동 - 클라이언트에게 다른 페이지로 이동을 명령
     }
 
 //    3. 기존 사용자 정보 수정 폼을 보여주는 메서드
@@ -117,15 +118,40 @@ public class UserServlet extends HttpServlet { // 서블릿 컨테이너가 해�
         dispatcher.forward(req,resp);
     }
 
-    private void updateUser(HttpServletRequest req, HttpServletResponse resp) {
+    private void updateUser(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException, SQLException
+    {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String country = req.getParameter("country");
 
+        User user = new User(id, name, email, country);
+
+        userDao.updateUser(user);
+
+        resp.sendRedirect("list");
     }
 
-    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) {
+    private void deleteUser(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException, SQLException
+    {
+        int id = Integer.parseInt(req.getParameter("id"));
 
+        userDao.deleteUser(id);
+
+        resp.sendRedirect("list");
     }
-    
-    private void listUser(HttpServletRequest req, HttpServletResponse resp) {
+
+    private void listUser(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException, SQLException
+    {
+        List<User> listUser = userDao.selectAllUsers();
+
+        req.setAttribute("listUser", listUser);
+
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/user/user-list.jsp");
+        dispatcher.forward(req,resp);
     }
 
 

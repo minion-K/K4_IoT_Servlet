@@ -24,7 +24,7 @@
 <%-- 출력문 (자바표현식) : <%= 표현식 %>--%>
 
   <% String name = "이승아"; %>
-  <p> 안녕하세요, <%=name%>님 :)</p>
+  <p> 안녕하세요, <%= name%>님 :)</p>
 
 <%--
   JSP에서 request 사용: 서블릿에서 데이터를 보낸 경우
@@ -33,7 +33,7 @@
 --%>
 
   <h2> ${user == null ? "New User" : "Edit User"}</h2>
-  <form action="${user = null ? "insert" : "update"}" method="post">
+  <form action="${user == null ? "insert" : "update"}" method="post">
     <input type="hidden" name="id" value="${user.id}"/>
 
     <input type="text" name="name" value="${user.name}"/>

@@ -31,7 +31,7 @@ public class UserDao {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(UserSql.SELECT_BY_ID)
         ) {
-            pstmt.setInt(1, user.getId());
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
 
             if(rs.next()) {
@@ -72,10 +72,10 @@ public class UserDao {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(UserSql.UPDATE)
         ) {
-            pstmt.setString(1, "name");
-            pstmt.setString(2, "email");
-            pstmt.setString(3, "country");
-            pstmt.setString(4, "id");
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getCountry());
+            pstmt.setInt(4, user.getId());
 
             rowUpdate = pstmt.executeUpdate() > 0;
         }
